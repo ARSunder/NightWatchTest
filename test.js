@@ -1,18 +1,24 @@
 module.exports = {
 	'search' : function(browser){
 		var title = "How Google Tests Software";
-		var price = "$21.59";
+		var price-whole = "21";
+		var price-frac = "59";
 
 		function searchResult(elems){
 			elems.value.forEach(function(elem){
-				browser.elementIdElements(elem.ELEMENT, "css selector", "li a", function(result){
+				browser.elementIdElements(elem.ELEMENT, "css selector", "li a.s-access-detail-page", function(result){
 					browser
 					.assert.equal(result.title,title)
-					.click(elem)
-					.pause(1000)
-					.waitForElementVisible("body", 1000)
-					.assert.elementPresent("#mediaTabs_tabSet")
-					.elements("css selector", "#mediaTabs_tabSet li", tabs)					
+					.elementIdElement(result.ELEMENT, "css selector", "span.sx-price.sx-price-large", function(prices){
+						prices.forEach(function(price){
+							browser.elementIdElement(price.ELEMENT, "css selector", "span.sx-price-whole", function(whole){
+								browser.assert.equal(whole.text, price-whole);
+							})
+							browser.elementIdElement(price.ELEMENT, "css selector", "sup.sx-price-fractional", function(frac){
+								browser.assert.equal(frac.text, price-frac);
+							})
+						})
+					})			
 				})
 			});
 		}
@@ -37,3 +43,4 @@ module.exports = {
 		.end()
 	}
 };
+
