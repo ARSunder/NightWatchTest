@@ -1,4 +1,19 @@
 module.exports = {
+	var session;
+	before: funtion(browser){
+		browser.session(function(result){
+			session = result;
+			console.log("Session: ");
+			console.log(result.value);
+		});
+	},
+
+	after: function(result){
+		browser.session('delete', session, function(result){
+			console.log("Terminating: " + result.value);
+		})
+	}
+
 	'search' : function(browser){
 		var title = "How Google Tests Software";
 		var price-whole = "21";
